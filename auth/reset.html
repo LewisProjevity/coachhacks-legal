@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reset Password · CoachHacks</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body><div class="wrap">
+<header><a href="/"><svg viewBox="0 0 120 120" width="36" height="36" aria-hidden="true"><rect width="120" height="120" rx="27" fill="#0B6B3A"/><line x1="12" y1="60" x2="108" y2="60" stroke="#fff" stroke-width="7" opacity=".35"/><circle cx="60" cy="60" r="30" fill="none" stroke="#fff" stroke-width="7"/><path d="M45 61 l11 11 l21 -24" fill="none" stroke="#FFC52E" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg> CoachHacks</a></header>
+<!-- Web fallback for password reset when the app isn't installed on this device. -->
+<h1>Choose a new password</h1>
+<p id="working" class="muted">Checking your link…</p>
+<form id="form" hidden>
+  <label for="pw">New password</label>
+  <input id="pw" type="password" autocomplete="new-password" minlength="8" required aria-describedby="pw-hint">
+  <p id="pw-hint" class="muted" style="font-size:14px;margin:6px 0 0">At least 8 characters.</p>
+  <div id="form-error" class="notice error" role="alert" hidden></div>
+  <button type="submit">Save new password</button>
+</form>
+<div id="ok" hidden>
+  <div class="notice">Your new password is saved.</div>
+  <p>Open CoachHacks on your phone and sign in with it.</p>
+</div>
+<div id="fail" hidden>
+  <div class="notice error" role="alert">This link has expired or has already been used.</div>
+  <p>Open CoachHacks, tap <b>Forgot your password?</b> and we’ll send a new link.</p>
+</div>
+<footer><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/support">Support</a><br>CoachHacks is made by Projevity Pty Ltd (ACN 696 573 154), Queensland, Australia.</footer>
+</div>
+<script src="/auth/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.min.js"></script>
+<script>
+(async () => {
+  const $ = (id) => document.getElementById(id)
+  const show = (id) => { ['working', 'form', 'ok', 'fail'].forEach((x) => $(x).hidden = x !== id) }
+  const tokenHash = new URLSearchParams(location.search).get('token_hash')
+  history.replaceState(null, '', location.pathname)
+  if (!tokenHash) return show('fail')
+  const c = window.COACHHACKS
+  const sb = supabase.createClient(c.supabaseUrl, c.supabaseAnonKey, { auth: { persistSession: false } })
+  const { error } = await sb.auth.verifyOtp({ token_hash: tokenHash, type: 'recovery' })
+  if (error) return show('fail')
+  show('form')
+  $('form').addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const pw = $('pw').value
+    const err = $('form-error')
+    if (pw.length < 8) { err.textContent = 'Choose a password with at least 8 characters.'; err.hidden = false; return }
+    const btn = e.submitter; btn.disabled = true
+    const { error } = await sb.auth.updateUser({ password: pw })
+    btn.disabled = false
+    if (error) { err.textContent = 'That didn’t work. Please try again.'; err.hidden = false; return }
+    await sb.auth.signOut()
+    show('ok')
+  })
+})()
+</script>
+</body></html>

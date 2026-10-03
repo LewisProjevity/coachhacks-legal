@@ -1,0 +1,16 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["VPA9CQ3HW7.com.projevity.coachhacks"],
+        "components": [
+          { "/": "/auth/*", "comment": "Email confirmation and password reset" },
+          { "/": "/join/*", "comment": "Team invites" }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["VPA9CQ3HW7.com.projevity.coachhacks"]
+  }
+}
