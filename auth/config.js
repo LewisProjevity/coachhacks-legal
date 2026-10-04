@@ -1,6 +1,5 @@
-// Public values only (the anon key is designed to be public; RLS protects data).
-// Fill these in from Supabase > Project Settings > API after creating the project.
+// Public values only (the publishable key is designed to be public; RLS protects data).
 window.COACHHACKS = {
-  supabaseUrl: 'REPLACE-WITH-SUPABASE-URL',
-  supabaseAnonKey: 'REPLACE-WITH-SUPABASE-ANON-KEY',
+  supabaseUrl: 'https://qtpelyrzcwuoboanqokj.supabase.co',
+  supabaseAnonKey: 'sb_publishable_jpV25dApjJnh4G_DDP2T6Q_VIYUU-pN',
 }
