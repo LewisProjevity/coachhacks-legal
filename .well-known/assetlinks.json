@@ -5,8 +5,7 @@
       "namespace": "android_app",
       "package_name": "com.projevity.coachhacks",
       "sha256_cert_fingerprints": [
-        "REPLACE-WITH-PLAY-APP-SIGNING-SHA256",
-        "REPLACE-WITH-UPLOAD-OR-DEBUG-SHA256"
+        "3F:C2:91:60:F5:81:DC:04:DD:A2:85:2E:DA:90:AD:B9:F5:74:28:60:9E:4E:77:4C:17:C9:19:B3:DA:DD:BF:4E"
       ]
     }
   }
